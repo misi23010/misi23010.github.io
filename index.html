@@ -1,3 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>아두이노 LED 제어</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+</head>
 <body>
-  <p>hello</p>
+    <h1>아두이노 LED 제어</h1>
+    <button id="onButton">켜기</button>
+    <button id="offButton">끄기</button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+
+        // Firebase 구성
+        const firebaseConfig = {
+          apiKey: "AIzaSyB_3jnnOtUZvdSBl5Wik-g7Pb4C3zHuQjM",
+          authDomain: "ardunino-cb10f.firebaseapp.com",
+          projectId: "ardunino-cb10f",
+          storageBucket: "ardunino-cb10f.firebasestorage.app",
+          messagingSenderId: "38155257754",
+          appId: "1:38155257754:web:f51ae49c74460c2a2a9c23",
+          measurementId: "G-B7HNK2EL0K"
+        };
+        //firebase.initializeApp(firebaseConfig);
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        const database = firebase.database();
+
+        document.getElementById('onButton').addEventListener('click', () => {
+            database.ref('ledState').set('ON');
+        });
+
+        document.getElementById('offButton').addEventListener('click', () => {
+            database.ref('ledState').set('OFF');
+        });
+      </script>
 </body>
+</html>
