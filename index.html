@@ -2,17 +2,10 @@
 <html>
 <head>
     <title>아두이노 LED 제어</title>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-</head>
-<body>
-    <h1>아두이노 LED 제어</h1>
-    <button id="onButton">켜기</button>
-    <button id="offButton">끄기</button>
-
     <script type="module">
+        // Firebase SDK 가져오기
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
         // Firebase 구성
         const firebaseConfig = {
@@ -24,19 +17,26 @@
           appId: "1:38155257754:web:f51ae49c74460c2a2a9c23",
           measurementId: "G-B7HNK2EL0K"
         };
-        //firebase.initializeApp(firebaseConfig);
+
+        // Firebase 초기화
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
+        const database = getDatabase(app);
 
-        const database = firebase.database();
+        // 버튼 이벤트 핸들러
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('onButton').addEventListener('click', () => {
+                set(ref(database, 'ledState'), 'ON');
+            });
 
-        document.getElementById('onButton').addEventListener('click', () => {
-            database.ref('ledState').set('ON');
+            document.getElementById('offButton').addEventListener('click', () => {
+                set(ref(database, 'ledState'), 'OFF');
+            });
         });
-
-        document.getElementById('offButton').addEventListener('click', () => {
-            database.ref('ledState').set('OFF');
-        });
-      </script>
+    </script>
+</head>
+<body>
+    <h1>아두이노 LED 제어</h1>
+    <button id="onButton">켜기</button>
+    <button id="offButton">끄기</button>
 </body>
 </html>
