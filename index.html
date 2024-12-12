@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LED Control</title>
+</head>
+<body>
+    <h2>LED Control</h2>
+    <button onclick="controlLED('on')">LED ON</button>
+    <button onclick="controlLED('off')">LED OFF</button>
+
+    <script>
+    function controlLED(action) {
+        fetch(`http://192.168.1.177/${action === 'on' ? 'ledon' : 'ledoff'}`)
+            .then(response => console.log('LED 상태 변경: ' + action));
+    }
+    </script>
+</body>
+</html>
