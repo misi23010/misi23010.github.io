@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>아두이노 LED 제어</title>
+    <title>아두이노 LED 제어1</title>
     <script type="module">
         // Firebase SDK 가져오기
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
@@ -26,11 +26,11 @@
         // 버튼 이벤트 핸들러
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('onButton').addEventListener('click', () => {
-                set(ref(database, 'ledState'), 'ON');
+                set(ref(database, 'ledState'), 1);
             });
 
             document.getElementById('offButton').addEventListener('click', () => {
-                set(ref(database, 'ledState'), 'OFF');
+                set(ref(database, 'ledState'), 0);
             });
         });
     </script>
