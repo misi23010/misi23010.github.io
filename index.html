@@ -1,18 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>LED Control2</title>
+    <title>아두이노 LED 제어</title>
+    <script type="module">
+        // Firebase SDK 가져오기
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
+        // Firebase 구성
+        const firebaseConfig = {
+          apiKey: "AIzaSyB_3jnnOtUZvdSBl5Wik-g7Pb4C3zHuQjM",
+          authDomain: "ardunino-cb10f.firebaseapp.com",
+          projectId: "ardunino-cb10f",
+          storageBucket: "ardunino-cb10f.firebasestorage.app",
+          messagingSenderId: "38155257754",
+          appId: "1:38155257754:web:f51ae49c74460c2a2a9c23",
+          measurementId: "G-B7HNK2EL0K",
+          databaseURL: "https://ardunino-cb10f-default-rtdb.firebaseio.com"
+        };
+
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // 버튼 이벤트 핸들러
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('onButton').addEventListener('click', () => {
+                set(ref(database, 'ledState'), 'ON');
+            });
+
+            document.getElementById('offButton').addEventListener('click', () => {
+                set(ref(database, 'ledState'), 'OFF');
+            });
+        });
+    </script>
 </head>
 <body>
-    <h2>LED Control</h2>
-    <button onclick="controlLED('on')">LED ON</button>
-    <button onclick="controlLED('off')">LED OFF</button>
-
-    <script>
-    function controlLED(action) {
-        fetch(`http://http://172.30.1.177//${action === 'on' ? 'ledon' : 'ledoff'}`)
-            .then(response => console.log('LED 상태 변경: ' + action));
-    }
-    </script>
+    <h1>아두이노 LED 제어</h1>
+    <button id="onButton">켜기</button>
+    <button id="offButton">끄기</button>
 </body>
 </html>
