@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>LED Control</title>
+    <title>LED Control2</title>
 </head>
 <body>
     <h2>LED Control</h2>
@@ -10,7 +10,7 @@
 
     <script>
     function controlLED(action) {
-        fetch(`http://192.168.1.177/${action === 'on' ? 'ledon' : 'ledoff'}`)
+        fetch(`http://http://172.30.1.177//${action === 'on' ? 'ledon' : 'ledoff'}`)
             .then(response => console.log('LED 상태 변경: ' + action));
     }
     </script>
