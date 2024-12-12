@@ -26,11 +26,11 @@
         // 버튼 이벤트 핸들러
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('onButton').addEventListener('click', () => {
-                set(ref(database, 'ledState'), 1);
+                set(ref(database, '/test/led/ledState'), 1);
             });
 
             document.getElementById('offButton').addEventListener('click', () => {
-                set(ref(database, 'ledState'), 0);
+                set(ref(database, '/test/led/ledState'), 0);
             });
         });
     </script>
