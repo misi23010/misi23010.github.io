@@ -1,43 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <title>아두이노 LED 제어1</title>
-    <script type="module">
-        // Firebase SDK 가져오기
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
-
-        // Firebase 구성
-        const firebaseConfig = {
-          apiKey: "AIzaSyB_3jnnOtUZvdSBl5Wik-g7Pb4C3zHuQjM",
-          authDomain: "ardunino-cb10f.firebaseapp.com",
-          projectId: "ardunino-cb10f",
-          storageBucket: "ardunino-cb10f.firebasestorage.app",
-          messagingSenderId: "38155257754",
-          appId: "1:38155257754:web:f51ae49c74460c2a2a9c23",
-          measurementId: "G-B7HNK2EL0K",
-          databaseURL: "https://ardunino-cb10f-default-rtdb.firebaseio.com"
-        };
-
-        // Firebase 초기화
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        // 버튼 이벤트 핸들러
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('onButton').addEventListener('click', () => {
-                set(ref(database, '/test/led/ledState'), 1);
-            });
-
-            document.getElementById('offButton').addEventListener('click', () => {
-                set(ref(database, '/test/led/ledState'), 0);
-            });
-        });
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아두이노 LED 제어</title>
 </head>
 <body>
     <h1>아두이노 LED 제어</h1>
-    <button id="onButton">켜기</button>
-    <button id="offButton">끄기</button>
+    <button id="connectBtn">블루투스 연결</button>
+    <button id="ledOnBtn" disabled>LED 켜기</button>
+    <button id="ledOffBtn" disabled>LED 끄기</button>
+
+    <script>
+        let bluetoothDevice;
+        let characteristic;
+
+        document.getElementById('connectBtn').addEventListener('click', connectBluetooth);
+        document.getElementById('ledOnBtn').addEventListener('click', () => sendCommand('1'));
+        document.getElementById('ledOffBtn').addEventListener('click', () => sendCommand('0'));
+
+        async function connectBluetooth() {
+            try {
+                bluetoothDevice = await navigator.bluetooth.requestDevice({
+                    filters: [{ services: ['0000ffe0-0000-1000-8000-00805f9b34fb'] }]
+                });
+                const server = await bluetoothDevice.gatt.connect();
+                const service = await server.getPrimaryService('0000ffe0-0000-1000-8000-00805f9b34fb');
+                characteristic = await service.getCharacteristic('0000ffe1-0000-1000-8000-00805f9b34fb');
+                
+                document.getElementById('ledOnBtn').disabled = false;
+                document.getElementById('ledOffBtn').disabled = false;
+                console.log('블루투스 연결 성공');
+            } catch (error) {
+                console.error('블루투스 연결 실패:', error);
+            }
+        }
+
+        async function sendCommand(command) {
+            if (characteristic) {
+                await characteristic.writeValue(new TextEncoder().encode(command));
+                console.log(`명령 전송: ${command}`);
+            }
+        }
+    </script>
 </body>
 </html>
